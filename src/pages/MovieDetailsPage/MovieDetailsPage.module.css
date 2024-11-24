@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.movie {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    border-bottom: 1px solid darkgrey;
+    padding-bottom: 12px;
+    margin-top: 24px;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.title {
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.genrelist {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    list-style: none;
+}
+
+.addcontainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-bottom: 1px solid darkgrey;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
