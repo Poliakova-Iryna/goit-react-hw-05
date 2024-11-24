@@ -3,29 +3,29 @@ import MovieList from "../../components/MovieList/MovieList";
 import { useEffect, useState } from "react";
 import { fetchSearchMovie } from "../../services/api";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import MovieDetailsPage from "../MovieDetailsPage/MovieDetailsPage";
 
 const MoviesPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
     const [movies, setMovies] = useState([]);
-    const query  = searchParams.get('query') ?? '';
+    const query = searchParams.get('query') ?? '';
 
     const handleSetQuery = (newValue) => {
-        setSearchParams({query: newValue});
+        setSearchParams({ query: newValue });
     };
 
     useEffect(() => {
         const getData = async () => {
-            if(query) {
+            if (query) {
                 const data = await fetchSearchMovie(query);
-                setMovies(data)
+                setMovies(data);
             } else {
                 setMovies([]);
             }
         };
         getData();
-    }, [query])
+    }, [query]);
+
     return (
         <div>
             <SearchBar handleSetQuery={handleSetQuery} />
@@ -34,7 +34,9 @@ const MoviesPage = () => {
                     {movies.length > 0 ? (
                         movies.map((movie) => (
                             <li key={movie.id}>
-                                <Link to={`/movies/${movie.id}`} state={location} element={<MovieDetailsPage />}>{movie.title}</Link>
+                                <Link to={`/movies/${movie.id}`} state={location}>
+                                    {movie.title}
+                                </Link>
                             </li>
                         ))
                     ) : (
@@ -42,7 +44,7 @@ const MoviesPage = () => {
                     )}
                 </ul>
             )}
-            <MovieList />
+            <MovieList movies={movies} /> 
         </div>
     );
 };
