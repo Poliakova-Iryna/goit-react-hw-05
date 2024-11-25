@@ -7,7 +7,7 @@ const MovieDetailsPage = () => {
     const { movieId } = useParams();
     const location = useLocation();
     const [movie, setMovie] = useState(null);
-    const previousLocation = useRef(location.state?.from || "/movies"); 
+    const previousLocation = useRef(location.state ?? "/movies"); 
 
     useEffect(() => {
         const getData = async () => {

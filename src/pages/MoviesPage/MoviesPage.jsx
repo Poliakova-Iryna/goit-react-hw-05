@@ -1,14 +1,15 @@
-import { Link, useLocation, useSearchParams } from "react-router-dom";
 import MovieList from "../../components/MovieList/MovieList";
 import { useEffect, useState } from "react";
 import { fetchSearchMovie } from "../../services/api";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { useSearchParams } from "react-router-dom";
 
 const MoviesPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const location = useLocation();
     const [movies, setMovies] = useState([]);
     const query = searchParams.get('query') ?? '';
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const handleSetQuery = (newValue) => {
         setSearchParams({ query: newValue });
@@ -16,34 +17,31 @@ const MoviesPage = () => {
 
     useEffect(() => {
         const getData = async () => {
-            if (query) {
+            try {
                 const data = await fetchSearchMovie(query);
                 setMovies(data);
-            } else {
+                setLoading(false);
+            } catch {
                 setMovies([]);
+                setError('Ooops, something went wrong');
+            } finally {
+                setLoading(false);
             }
         };
         getData();
     }, [query]);
 
+    if(loading) {
+        return <p>Loading...</p>
+    }
+
+    if(error) {
+        return <p>{error}</p>
+    }
+
     return (
         <div>
             <SearchBar handleSetQuery={handleSetQuery} />
-            {query && (
-                <ul>
-                    {movies.length > 0 ? (
-                        movies.map((movie) => (
-                            <li key={movie.id}>
-                                <Link to={`/movies/${movie.id}`} state={location}>
-                                    {movie.title}
-                                </Link>
-                            </li>
-                        ))
-                    ) : (
-                        <p>No movies found</p>
-                    )}
-                </ul>
-            )}
             <MovieList movies={movies} /> 
         </div>
     );
